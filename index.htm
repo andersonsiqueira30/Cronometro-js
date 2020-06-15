@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Cronômetro</title>
+    <style>
+        .container{
+            text-align: center;
+        }
+
+        button{
+            background: #069;
+            color:white;
+            font-size: 32px;
+
+            padding: 8px 20px;/*para aumentar o tamanho do botão*/
+
+            cursor: pointer;/*para ficar a mãozinha*/
+
+            border:0;/*saiu a bordinha preta*/
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <audio id="sound" src="alarme.mp3" style="display:none;"></audio>
+
+    <div class="container">
+        <h2>Minutos:</h2>
+        <select name="minutos" id="minutos"></select>
+
+        <h2>Segundos:</h2>
+        <select name="segundos" id="segundos"></select>
+        <br>
+        <br>
+        <button id="começar">começar</button>
+
+        <div id="display">
+            <h3></h3>
+        </div><!--vai mostrar o que tá acontecendo-->
+    </div>
+
+    <script>
+        var display = document.getElementById("display")
+
+        var minutos = document.getElementById("minutos")
+        var segundos = document.getElementById("segundos")
+
+        var começar = document.getElementById("começar")
+
+        var cronometroseg;
+
+        var minutosAtual;
+        var segundoAtual;
+
+        var interval;//vai ficar fazendo o loop de 1 e 1 segundo
+
+        for(var i = 0; i <= 60; i++){
+            minutos.innerHTML+= '<option value="'+i+'">'+i+'</option>';
+        }
+
+        for(var i = 1; i <= 60; i++){
+            segundos.innerHTML+= '<option value="'+i+'">'+i+'</option>';
+        }
+
+        começar.addEventListener("click",() => {
+            minutosAtual = minutos.value;//esse value tá puxando o que você colocou no select
+            segundoAtual = segundos.value;
+
+            display.childNodes[1].innerHTML = minutosAtual + ":" + segundoAtual;//childNodes vai pegar todos 
+            //elementos filhos, ou seja, h3
+
+            interaval = setInterval(() => {
+                segundoAtual--;
+                if(segundoAtual <= 0){
+                    if(minutosAtual > 0){
+                        minutosAtual--;
+                        segundoAtual = 59;
+                    }else{
+                        alert("acabou");
+                        document.getElementById("sound").play();
+                        clearInterval(interval);
+                    };
+                    };
+                    display.childNodes[1].innerHTML = minutosAtual + ":" + segundoAtual;
+
+            }, 1000);
+        })
+
+        
+    </script>
+</body>
+</html>
